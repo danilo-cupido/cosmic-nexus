@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { db } from './connection';
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 function App() {
 	const handleClick = async () => {

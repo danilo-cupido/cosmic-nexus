@@ -3,13 +3,14 @@ import logo from '../assets/logo.png';
 
 const Navbar = () => {
 	const categories = [
+		{ name: 'Home', url: '/' },
 		{ name: 'Books', url: '/books' },
 		{ name: 'Movies', url: '/movies' },
 		{ name: 'Comic Books', url: '/comics' },
 	];
 	return (
-		<div className='flex bg-transparent items-center'>
-			<div className='flex items-center mr-20'>
+		<div className='flex bg-transparent items-center justify-between'>
+			<div className='flex items-center'>
 				<img src={logo} alt='Cosmic Nexus logo' className='w-20' />
 				<p>COSMIC NEXUS</p>
 			</div>

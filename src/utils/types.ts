@@ -1,3 +1,9 @@
+import { ReactNode } from 'react';
+
+export type ContentWrapper = {
+	children: ReactNode;
+};
+
 export interface Book {
 	title: string;
 }

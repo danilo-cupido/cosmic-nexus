@@ -1,7 +1,11 @@
 import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import './App.css';
 import { db } from './connection';
 import { doc, getDoc } from 'firebase/firestore';
+
+import Home from './pages/Home';
 
 function App() {
 	interface Book {
@@ -25,13 +29,11 @@ function App() {
 	};
 
 	return (
-		<div className='App'>
-			<h1 className='text-3xl font-bold underline text-gray-400'>
-				Hello world!
-			</h1>
-			<button onClick={handleClick}>Click Me</button>
-			<div className='bg-amber-300'>{data?.title}</div>
-		</div>
+		<Router>
+			<Routes>
+				<Route path='/' element={<Home />} />
+			</Routes>
+		</Router>
 	);
 }
 

@@ -12,7 +12,17 @@ function App() {
 		title: string;
 	}
 
-	const [data, setData] = useState<Book>();
+	interface Movie {
+		title: string;
+	}
+
+	interface Comic {
+		title: string;
+	}
+
+	const [bookData, setBookData] = useState<Book>();
+	const [movieData, setMovieData] = useState<Movie>();
+	const [comicData, setComicData] = useState<Comic>();
 	const handleClick = async () => {
 		const docRef = doc(db, 'books', 'rrSkXSiaP94CEZ3nfqvw');
 		const docSnap = await getDoc(docRef);
@@ -20,7 +30,7 @@ function App() {
 		if (docSnap.exists()) {
 			const book = docSnap.data() as Book;
 			if (book) {
-				setData(book);
+				setBookData(book);
 			}
 		} else {
 			// doc.data() will be undefined in this case

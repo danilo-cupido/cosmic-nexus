@@ -15,9 +15,9 @@ const Navbar = () => {
 				<p>COSMIC NEXUS</p>
 			</div>
 			<ul className='flex'>
-				{categories.map((category) => {
+				{categories.map((category, index) => {
 					return (
-						<li className='mr-6'>
+						<li className='mr-6' key={`navItem-${index}`}>
 							<Link to={category.url}>{category.name}</Link>
 						</li>
 					);

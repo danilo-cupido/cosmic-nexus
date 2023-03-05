@@ -9,6 +9,7 @@ export interface BookAPIData {
 	volumeInfo: {
 		authors: string[];
 		imageLinks: { thumbnail: string };
+		publishedDate: string;
 		title: string;
 	};
 }

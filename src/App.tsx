@@ -35,6 +35,10 @@ function App() {
 
 export default App;
 
+// * FETCH data from Firestore *
+
+// const [book, setBook] = useState();
+
 // const handleClick = async () => {
 // 	const docRef = doc(db, 'books', 'rrSkXSiaP94CEZ3nfqvw');
 // 	const docSnap = await getDoc(docRef);

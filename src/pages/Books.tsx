@@ -37,7 +37,7 @@ const Books = () => {
 				</button>
 			</div>
 			{booksData && (
-				<div>
+				<div className='grid gap-4 grid-cols-4 mt-6'>
 					{booksData.items.map((bookData, index) => {
 						return <BookCard bookData={bookData} key={`book-${index}`} />;
 					})}

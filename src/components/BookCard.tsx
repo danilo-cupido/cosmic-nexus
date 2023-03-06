@@ -2,24 +2,29 @@ import { BookAPIData } from '../utils/types';
 
 const BookCard = (props: { bookData: BookAPIData }) => {
 	return (
-		<div className='flex'>
-			<div className='border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex justify-between leading-normal'>
-				<img
-					className='h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden'
-					src={props.bookData.volumeInfo.imageLinks.thumbnail}
-					alt={props.bookData.volumeInfo.title}
-				/>
-				<div className='flex-col'>
-					<div className='text-gray-900 font-bold text-xl mb-2'>
-						Title: {props.bookData.volumeInfo.title}
-					</div>
-					<div className='text-gray-900 text-xl mb-2'>
-						Author(s): {props.bookData.volumeInfo.authors}
-					</div>
-					<div className='text-gray-900 text-xl mb-2'>
-						Publish date: {props.bookData.volumeInfo.publishedDate}
-					</div>
-				</div>
+		<div className='border border-gray-300 bg-white rounded-lg p-4 flex leading-normal shadow-sm'>
+			<img
+				className='h-32 flex-none bg-cover rounded-t text-center overflow-hidden mr-2'
+				src={props.bookData.volumeInfo.imageLinks.thumbnail}
+				alt={props.bookData.volumeInfo.title}
+			/>
+			<div className='flex-col'>
+				<p className='text-gray-900 font-bold text-md mb-1'>
+					{props.bookData.volumeInfo.title}
+				</p>
+				<p className='text-gray-700 text-sm mb-1'>
+					{props.bookData.volumeInfo.authors.length === 1
+						? 'Author'
+						: 'Authors'}
+					: {props.bookData.volumeInfo.authors.join(', ')}
+				</p>
+				<p className='text-gray-700 text-sm'>
+					Published date:{' '}
+					{props.bookData.volumeInfo.publishedDate
+						.split('-')
+						.reverse()
+						.join('-')}
+				</p>
 			</div>
 		</div>
 	);

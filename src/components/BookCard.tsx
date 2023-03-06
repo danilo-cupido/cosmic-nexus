@@ -8,18 +8,14 @@ const BookCard = (props: { bookData: BookAPIData }) => {
 				src={props.bookData.volumeInfo.imageLinks.thumbnail}
 				alt={props.bookData.volumeInfo.title}
 			/>
-			<div className='flex-col'>
+			<div className='mt-1'>
 				<p className='text-gray-900 font-bold text-md mb-1'>
 					{props.bookData.volumeInfo.title}
 				</p>
 				<p className='text-gray-700 text-sm mb-1'>
-					{props.bookData.volumeInfo.authors.length === 1
-						? 'Author'
-						: 'Authors'}
-					: {props.bookData.volumeInfo.authors.join(', ')}
+					by {props.bookData.volumeInfo.authors.join(', ')}
 				</p>
 				<p className='text-gray-700 text-sm'>
-					Published date:{' '}
 					{props.bookData.volumeInfo.publishedDate
 						.split('-')
 						.reverse()

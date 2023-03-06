@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { FaSearch } from 'react-icons/fa';
 import { AxiosData } from '../utils/types';
+import BookCard from '../components/BookCard';
 
 const Books = () => {
 	const [searchTerm, setSearchTerm] = useState('');
@@ -36,12 +37,10 @@ const Books = () => {
 				</button>
 			</div>
 			{booksData && (
-				<div>
-					<ul>
-						{booksData.items.map((bookData, index) => {
-							return <li key={`book-${index}`}>{bookData.volumeInfo.title}</li>;
-						})}
-					</ul>
+				<div className='grid gap-4 grid-cols-4 mt-6'>
+					{booksData.items.map((bookData, index) => {
+						return <BookCard bookData={bookData} key={`book-${index}`} />;
+					})}
 				</div>
 			)}
 		</div>

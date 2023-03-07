@@ -6,7 +6,8 @@ const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData | null>(null);
 	useEffect(() => {
 		const fetchBook = async () => {
-			const url = `https://www.googleapis.com/books/v1/volumes/saONEAAAQBAJ`;
+			const id = window.location.pathname.split('/').at(-1);
+			const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
 			try {
 				const response = await axios.get<BookAPIData>(url);
 				console.log(response.data);

@@ -11,9 +11,13 @@ export interface BookAPIData {
 		imageLinks: { thumbnail: string };
 		publishedDate: string;
 		title: string;
+		description: string;
+		pageCount: number;
+		publisher: string;
+		language: string;
 	};
 }
-export interface AxiosData {
+export interface SearchResult {
 	items: BookAPIData[];
 	kind: string;
 	totalItems: number;

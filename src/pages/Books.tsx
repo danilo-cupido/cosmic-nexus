@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { FaSearch } from 'react-icons/fa';
-import { AxiosData } from '../utils/types';
+import { SearchResult } from '../utils/types';
 import BookCard from '../components/BookCard';
 
 const Books = () => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const [booksData, setBooksData] = useState<AxiosData | null>(null);
+	const [booksData, setBooksData] = useState<SearchResult | null>(null);
 	const handleSearch = async () => {
 		const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}+subject:fiction`;
 		try {
-			const response = await axios.get<AxiosData>(url);
+			const response = await axios.get<SearchResult>(url);
 			console.log(response.data);
 			if (response.data.items) {
 				setBooksData(response.data);

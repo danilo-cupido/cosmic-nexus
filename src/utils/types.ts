@@ -8,7 +8,7 @@ export interface BookAPIData {
 	id: string;
 	volumeInfo: {
 		authors: string[];
-		imageLinks: { thumbnail: string };
+		imageLinks?: { thumbnail: string };
 		publishedDate: string;
 		title: string;
 		description: string;

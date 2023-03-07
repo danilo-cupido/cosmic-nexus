@@ -8,9 +8,10 @@ Our goal is to create a community of sci-fi enthusiasts who share their passion 
 
 ## Tech Stack
 
-- TypeScript 
-- React 
-- Tailwind 
+- [TypeScript](https://www.typescriptlang.org/) 
+- [React](https://reactjs.org/) 
+- [Tailwind](https://tailwindcss.com/) 
+- [Firebase](https://firebase.google.com/)
 
 ### `npm start`
 

@@ -1,10 +1,12 @@
-# Getting Started with Create React App
+# 🪐 Cosmic Nexus 👽  
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to our Cosmic Nexus, where we explore the endless possibilities of the unknown universe. From the depths of space to the far-off corners of the galaxy, we bring you the latest news, reviews, and analysis of the most exciting science fiction stories and technology. Whether you're a fan of classic sci-fi novels or the latest blockbuster movies, our website is the ultimate destination for all things science fiction. Join us on a journey through time and space as we delve into the mysteries of the universe and discover what lies beyond our world. So buckle up, and get ready for an adventure like no other!
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+- TypeScript 
+- React 
+- Tailwind 
 
 ### `npm start`
 

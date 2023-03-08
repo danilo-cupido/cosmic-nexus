@@ -7,13 +7,17 @@ export type ContentWrapper = {
 export interface BookAPIData {
 	id: string;
 	volumeInfo: {
-		authors: string[];
-		imageLinks: { thumbnail: string };
+		authors?: string[];
+		imageLinks?: { thumbnail: string };
 		publishedDate: string;
 		title: string;
+		description: string;
+		pageCount: number;
+		publisher: string;
+		language: string;
 	};
 }
-export interface AxiosData {
+export interface SearchResult {
 	items: BookAPIData[];
 	kind: string;
 	totalItems: number;

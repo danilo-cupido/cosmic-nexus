@@ -11,7 +11,6 @@ const Books = () => {
 		const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}+subject:fiction`;
 		try {
 			const response = await axios.get<SearchResult>(url);
-			console.log(response.data);
 			if (response.data.items) {
 				setBooksData(response.data);
 			}

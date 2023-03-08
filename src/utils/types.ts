@@ -7,7 +7,7 @@ export type ContentWrapper = {
 export interface BookAPIData {
 	id: string;
 	volumeInfo: {
-		authors: string[];
+		authors?: string[];
 		imageLinks?: { thumbnail: string };
 		publishedDate: string;
 		title: string;

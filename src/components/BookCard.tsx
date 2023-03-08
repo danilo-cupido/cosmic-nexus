@@ -26,7 +26,10 @@ const BookCard = (props: { bookData: BookAPIData }) => {
 						{props.bookData.volumeInfo.title}
 					</p>
 					<p className='text-gray-700 text-sm mb-1'>
-						by {props.bookData.volumeInfo.authors.join(', ')}
+						by{' '}
+						{props.bookData.volumeInfo.authors
+							? props.bookData.volumeInfo.authors.join(', ')
+							: 'N/A'}
 					</p>
 					<p className='text-gray-700 text-sm'>
 						{props.bookData.volumeInfo.publishedDate

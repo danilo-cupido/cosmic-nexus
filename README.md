@@ -1,4 +1,4 @@
-# 🪐 Cosmic Nexus 👽  
+# 🪐 Cosmic Nexus 👽 🤖 
 
 Welcome to Comsic Nexus, a one-stop destination for all your science fiction cravings! Whether you're a die-hard fan of classic sci-fi movies or a passionate reader of sci-fi books, our website has everything you need to feed your sci-fi addiction. With a vast library of books, movies, comic books/graphic novels, TV series, and YouTube channels, you can browse through your favorite sci-fi content and discover new ones that you'll love.
 

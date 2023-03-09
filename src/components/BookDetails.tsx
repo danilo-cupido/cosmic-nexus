@@ -1,14 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
+import { db } from '../connection';
+import { doc, setDoc } from 'firebase/firestore';
 import { BookAPIData } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
+	const [review, setReview] = useState({ comment: '', rate: 0, username: '' });
+	const [bookId, setBookId] = useState('');
+
 	useEffect(() => {
 		const fetchBook = async () => {
 			const id = window.location.pathname.split('/').at(-1);
 			const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
+			setBookId(id!);
 			try {
 				const response = await axios.get<BookAPIData>(url);
 				if (response.data) {
@@ -20,6 +26,13 @@ const BookDetails = () => {
 		};
 		fetchBook();
 	}, []);
+
+	const handleSave = (e: FormEvent) => {
+		e.preventDefault();
+		const reviewRef = doc(db, 'books', bookId);
+		setDoc(reviewRef, review, { merge: true });
+	};
+
 	return (
 		<div className='flex justify-center'>
 			{book && (
@@ -64,6 +77,32 @@ const BookDetails = () => {
 						dangerouslySetInnerHTML={{ __html: book.description }}
 						className='mt-6'
 					></div>
+					<div className='border'>
+						<form>
+							<input
+								type='text'
+								onChange={(e) =>
+									setReview({ ...review, comment: e.target.value })
+								}
+								className='border'
+							/>
+							<input
+								type='number'
+								onChange={(e) =>
+									setReview({ ...review, rate: Number(e.target.value) })
+								}
+								className='border'
+							/>
+							<input
+								type='text'
+								onChange={(e) =>
+									setReview({ ...review, username: e.target.value })
+								}
+								className='border'
+							/>
+							<button onClick={handleSave}>Save</button>
+						</form>
+					</div>
 				</div>
 			)}
 		</div>

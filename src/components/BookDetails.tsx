@@ -4,6 +4,7 @@ import { db } from '../connection';
 import { doc, setDoc } from 'firebase/firestore';
 import { BookAPIData } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
+import { formattedDate } from '../utils';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
@@ -64,10 +65,7 @@ const BookDetails = () => {
 							)}
 							<div>
 								<p>Publisher: {book.publisher}</p>
-								<p>
-									Publish date:{' '}
-									{book.publishedDate.split('-').reverse().join('-')}
-								</p>
+								<p>Publish date: {formattedDate(book.publishedDate)}</p>
 								<p>Language: {book.language}</p>
 								<p>Pages: {book.pageCount}</p>
 							</div>

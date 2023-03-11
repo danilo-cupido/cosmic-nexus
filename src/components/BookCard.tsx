@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { BsImages } from 'react-icons/bs';
 import { BookAPIData } from '../utils/types';
+import { formattedDate } from '../utils';
 
 const BookCard = (props: { bookData: BookAPIData }) => {
 	return (
@@ -32,10 +33,7 @@ const BookCard = (props: { bookData: BookAPIData }) => {
 							: 'N/A'}
 					</p>
 					<p className='text-gray-700 text-sm'>
-						{props.bookData.volumeInfo.publishedDate
-							.split('-')
-							.reverse()
-							.join('-')}
+						{formattedDate(props.bookData.volumeInfo.publishedDate)}
 					</p>
 				</div>
 			</div>

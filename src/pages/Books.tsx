@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { FaSearch } from 'react-icons/fa';
 import { SearchResult } from '../utils/types';
 import BookCard from '../components/BookCard';
+import SearchBar from '../components/SearchBar';
 
 const Books = () => {
 	const [searchTerm, setSearchTerm] = useState('');
@@ -18,23 +18,13 @@ const Books = () => {
 			console.log(error);
 		}
 	};
-
 	return (
 		<div>
-			<div className='flex justify-center'>
-				<input
-					id='search'
-					type='text'
-					aria-label='search'
-					placeholder='Search'
-					className='border'
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-				/>
-				<button onClick={handleSearch}>
-					<FaSearch />
-				</button>
-			</div>
+			<SearchBar
+				inputChange={setSearchTerm}
+				value={searchTerm}
+				handleSearch={handleSearch}
+			/>
 			{booksData && (
 				<div className='grid gap-4 grid-cols-4 mt-6'>
 					{booksData.items.map((bookData, index) => {

@@ -1,11 +1,11 @@
-import { MouseEventHandler } from 'react';
+import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
-const SearchBar = (props: {
-	inputChange: (searchTerm: string) => void;
-	value: string;
-	handleSearch: MouseEventHandler;
-}) => {
+const SearchBar = (props: { handleSearch: (searchTerm: string) => void }) => {
+	const [value, setValue] = useState('');
+	const handleClick = () => {
+		props.handleSearch(value);
+	};
 	return (
 		<div className='flex justify-center'>
 			<div className='flex items-center border rounded-lg w-64 p-2'>
@@ -16,11 +16,11 @@ const SearchBar = (props: {
 					aria-label='search'
 					placeholder='Search'
 					className='ml-2 w-full focus:outline-none'
-					value={props.value}
-					onChange={(e) => props.inputChange(e.target.value)}
+					value={value}
+					onChange={(e) => setValue(e.target.value)}
 				/>
 			</div>
-			<button onClick={props.handleSearch}>Search</button>
+			<button onClick={handleClick}>Search</button>
 		</div>
 	);
 };

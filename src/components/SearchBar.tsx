@@ -3,18 +3,18 @@ import { FaSearch } from 'react-icons/fa';
 
 const SearchBar = (props: { handleSearch: (searchTerm: string) => void }) => {
 	const [value, setValue] = useState('');
-	const handler = (key: any) => {
-		if (key.code === 'Enter') {
-			props.handleSearch(value);
-		}
-	};
 
 	useEffect(() => {
+		const handler = (key: any) => {
+			if (key.code === 'Enter') {
+				props.handleSearch(value);
+			}
+		};
 		window.addEventListener('keydown', handler);
 		return () => {
 			window.removeEventListener('keydown', handler);
 		};
-	}, [value]);
+	}, [props, value]);
 
 	return (
 		<div className='flex justify-center'>

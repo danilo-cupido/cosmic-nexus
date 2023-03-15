@@ -11,3 +11,13 @@
 	font-family: 'NeonRaveItalic';
 	src: local('NeonRaveItalic'), url('./fonts/NeonRaveItalic-GOD2g.ttf');
 }
+
+@font-face {
+	font-family: 'RobotReavers';
+	src: local('RobotReavers'), url('./fonts/RobotReavers-044d.ttf');
+}
+
+@font-face {
+	font-family: 'RobotReaversItalic';
+	src: local('RobotReaversItalic'), url('./fonts/RobotReaversItalic-4aa4.ttf');
+}

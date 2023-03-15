@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 const SearchBar = (props: { handleSearch: (searchTerm: string) => void }) => {
 	const [value, setValue] = useState('');
-	const handleClick = () => {
-		props.handleSearch(value);
+	const handler = (key: any) => {
+		if (key.code === 'Enter') {
+			props.handleSearch(value);
+		}
 	};
+
+	useEffect(() => {
+		window.addEventListener('keydown', handler);
+		return () => {
+			window.removeEventListener('keydown', handler);
+		};
+	}, [value]);
+
 	return (
 		<div className='flex justify-center'>
-			<div className='flex items-center border rounded-lg w-64 p-2'>
+			<div className='flex items-center border rounded-lg w-80 p-2'>
 				<FaSearch />
 				<input
 					id='search'
@@ -20,7 +30,6 @@ const SearchBar = (props: { handleSearch: (searchTerm: string) => void }) => {
 					onChange={(e) => setValue(e.target.value)}
 				/>
 			</div>
-			<button onClick={handleClick}>Search</button>
 		</div>
 	);
 };

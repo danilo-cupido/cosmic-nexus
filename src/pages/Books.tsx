@@ -4,6 +4,7 @@ import { SearchResult } from '../utils/types';
 import BookCard from '../components/BookCard';
 import SearchBar from '../components/SearchBar';
 import { Triangle } from 'react-loader-spinner';
+import robot from '../assets/robot.png';
 
 const Books = () => {
 	const [booksData, setBooksData] = useState<SearchResult | null>(null);
@@ -52,9 +53,12 @@ const Books = () => {
 				</div>
 			)}
 			{noResult && (
-				<p className="flex justify-center text-9xl font-['NeonRave'] mt-64">
-					No Books found
-				</p>
+				<div className='flex justify-center'>
+					<img src={robot} alt='A disappointed robot' />
+					<p className="text-9xl font-['RobotReaversItalic'] mt-64 pl-6">
+						No Books found
+					</p>
+				</div>
 			)}
 		</div>
 	);

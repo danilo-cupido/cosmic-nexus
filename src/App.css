@@ -1,3 +1,13 @@
 .App {
 	text-align: center;
 }
+
+@font-face {
+	font-family: 'NeonRave';
+	src: local('NeonRave'), url('./fonts/NeonRave-z82z4.ttf');
+}
+
+@font-face {
+	font-family: 'NeonRaveItalic';
+	src: local('NeonRaveItalic'), url('./fonts/NeonRaveItalic-GOD2g.ttf');
+}

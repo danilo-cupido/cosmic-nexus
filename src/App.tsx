@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import './App.css';
+import './fonts/NeonRave-z82z4.ttf';
 // import { db } from './connection';
 // import { doc, getDoc } from 'firebase/firestore';
 

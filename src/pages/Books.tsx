@@ -51,7 +51,11 @@ const Books = () => {
 					})}
 				</div>
 			)}
-			{noResult && <p>No Books found</p>}
+			{noResult && (
+				<p className="flex justify-center text-9xl font-['NeonRave'] mt-64">
+					No Books found
+				</p>
+			)}
 		</div>
 	);
 };

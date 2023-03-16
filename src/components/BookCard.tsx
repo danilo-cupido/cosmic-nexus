@@ -4,9 +4,14 @@ import { BookAPIData } from '../utils/types';
 import { formattedDate } from '../utils';
 
 const BookCard = (props: { bookData: BookAPIData }) => {
+	const getFormattedAuthors = (authors: string[]) => {
+		if (authors.length > 3) {
+			return authors.slice(0, 3).join(', ') + '...';
+		} else return authors.join(', ');
+	};
 	return (
 		<Link to={`/books/${props.bookData.id}`}>
-			<div className='border border-gray-300 bg-white rounded-lg p-4 flex leading-normal shadow-sm'>
+			<div className='border border-gray-300 bg-white rounded-lg p-4 flex leading-normal shadow-sm h-full'>
 				{props.bookData.volumeInfo.imageLinks ? (
 					<img
 						className='h-32 flex-none bg-cover rounded-t text-center overflow-hidden mr-2 shadow-sm'
@@ -29,7 +34,7 @@ const BookCard = (props: { bookData: BookAPIData }) => {
 					<p className='text-gray-700 text-sm mb-1'>
 						by{' '}
 						{props.bookData.volumeInfo.authors
-							? props.bookData.volumeInfo.authors.join(', ')
+							? getFormattedAuthors(props.bookData.volumeInfo.authors)
 							: 'N/A'}
 					</p>
 					<p className='text-gray-700 text-sm'>

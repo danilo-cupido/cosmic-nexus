@@ -12,13 +12,15 @@ const Navbar = () => {
 		<div className='flex bg-transparent items-center justify-between'>
 			<div className='flex items-center'>
 				<img src={logo} alt='Cosmic Nexus logo' className='w-20' />
-				<p className="font-['RobotReavers']">COSMIC NEXUS</p>
+				<p className="font-['RobotReavers'] font-semibold">COSMIC NEXUS</p>
 			</div>
 			<ul className='flex'>
 				{categories.map((category, index) => {
 					return (
 						<li className='mr-6' key={`navItem-${index}`}>
-							<Link to={category.url}>{category.name}</Link>
+							<Link to={category.url} className="font-['RobotReaversItalic']">
+								{category.name}
+							</Link>
 						</li>
 					);
 				})}

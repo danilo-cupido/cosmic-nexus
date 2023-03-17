@@ -1,8 +1,8 @@
 import { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import { db } from '../connection';
-import { doc, setDoc } from 'firebase/firestore';
-import { BookAPIData } from '../utils/types';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { BookAPIData, ReviewData } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
 
@@ -10,12 +10,13 @@ const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
 	const [review, setReview] = useState({ comment: '', rate: 0, username: '' });
 	const [bookId, setBookId] = useState('');
+	const [userReview, setUserReview] = useState<ReviewData | null>(null);
 
 	useEffect(() => {
+		const id = window.location.pathname.split('/').at(-1);
+		setBookId(id!);
 		const fetchBook = async () => {
-			const id = window.location.pathname.split('/').at(-1);
 			const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
-			setBookId(id!);
 			try {
 				const response = await axios.get<BookAPIData>(url);
 				if (response.data) {
@@ -26,12 +27,51 @@ const BookDetails = () => {
 			}
 		};
 		fetchBook();
+
+		const fetchReview = async () => {
+			if (id) {
+				const docRef = doc(db, 'books', id);
+				const docSnap = await getDoc(docRef);
+
+				if (docSnap.exists()) {
+					const review = docSnap.data() as ReviewData;
+					if (review) {
+						setUserReview(review);
+						// console.log(review.comment);
+					}
+				} else {
+					console.log('Book not reviewed yet');
+				}
+			}
+		};
+		fetchReview();
 	}, []);
+
+	// useEffect(() => {
+	// 	const fetchReview = async () => {
+	// 		if (bookId) {
+	// 			const docRef = doc(db, 'books', bookId);
+	// 			const docSnap = await getDoc(docRef);
+
+	// 			if (docSnap.exists()) {
+	// 				const review = docSnap.data();
+	// 				if (review) {
+	// 					// setUserReview(book);
+	// 					console.log(review);
+	// 				}
+	// 			} else {
+	// 				console.log('Book not reviewed yet');
+	// 			}
+	// 		}
+	// 	};
+	// 	fetchReview();
+	// }, []);
 
 	const handleSave = (e: FormEvent) => {
 		e.preventDefault();
 		const reviewRef = doc(db, 'books', bookId);
-		setDoc(reviewRef, review, { merge: true });
+		setDoc(reviewRef, { reviews: [review] }, { merge: true });
+		console.log(review);
 	};
 
 	return (
@@ -80,8 +120,9 @@ const BookDetails = () => {
 							<input
 								type='text'
 								onChange={(e) =>
-									setReview({ ...review, comment: e.target.value })
+									setReview({ ...review, username: e.target.value })
 								}
+								placeholder='Username'
 								className='border'
 							/>
 							<input
@@ -89,18 +130,29 @@ const BookDetails = () => {
 								onChange={(e) =>
 									setReview({ ...review, rate: Number(e.target.value) })
 								}
+								min='1'
+								max='5'
+								placeholder='Score'
 								className='border'
 							/>
 							<input
 								type='text'
 								onChange={(e) =>
-									setReview({ ...review, username: e.target.value })
+									setReview({ ...review, comment: e.target.value })
 								}
+								placeholder='Review'
 								className='border'
 							/>
 							<button onClick={handleSave}>Save</button>
 						</form>
 					</div>
+					{userReview && (
+						<div>
+							<p>{userReview.username}</p>
+							<p>{userReview.rate}</p>
+							<p>{userReview.comment}</p>
+						</div>
+					)}
 				</div>
 			)}
 		</div>

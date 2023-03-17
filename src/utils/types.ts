@@ -17,6 +17,12 @@ export interface BookAPIData {
 		language: string;
 	};
 }
+
+export interface ReviewData {
+	username: string;
+	rate: number;
+	comment: string;
+}
 export interface SearchResult {
 	items: BookAPIData[];
 	kind: string;

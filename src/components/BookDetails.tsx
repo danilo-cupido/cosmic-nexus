@@ -5,6 +5,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { BookAPIData, ReviewData } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
+import StarRating from './StarRating';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
@@ -155,6 +156,7 @@ const BookDetails = () => {
 					)}
 				</div>
 			)}
+			<StarRating />
 		</div>
 	);
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import { db } from '../connection';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { BookAPIData, ReviewData } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
@@ -9,9 +9,13 @@ import StarRating from './StarRating';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
-	const [review, setReview] = useState({ comment: '', rate: 0, username: '' });
+	const [formData, setFormData] = useState({
+		comment: '',
+		rate: 0,
+		username: '',
+	});
 	const [bookId, setBookId] = useState('');
-	const [userReview, setUserReview] = useState<ReviewData | null>(null);
+	const [userReview, setUserReview] = useState<ReviewData[] | null>(null);
 
 	useEffect(() => {
 		const id = window.location.pathname.split('/').at(-1);
@@ -31,18 +35,28 @@ const BookDetails = () => {
 
 		const fetchReview = async () => {
 			if (id) {
-				const docRef = doc(db, 'books', id);
-				const docSnap = await getDoc(docRef);
+				const reviews: ReviewData[] = [];
+				const docRef = db.collection('books').doc(id);
+				const reviewDocs = await getDocs(collection(docRef, 'reviews'));
 
-				if (docSnap.exists()) {
-					const review = docSnap.data() as ReviewData;
-					if (review) {
-						setUserReview(review);
-						// console.log(review.comment);
-					}
-				} else {
-					console.log('Book not reviewed yet');
-				}
+				reviewDocs.forEach((review) => {
+					console.log(review.data());
+					reviews.push(review.data() as ReviewData);
+					//console.log(review.id);
+				});
+				setUserReview(reviews);
+				// const docRef = doc(db, 'books', id);
+				// const docSnap = await getDoc(docRef);
+
+				// if (docSnap.exists()) {
+				// 	const review = docSnap.data() as ReviewData[];
+				// 	if (review) {
+				// 		// setUserReview(review);
+				// 		console.log(review);
+				// 	}
+				// } else {
+				// 	console.log('Book not reviewed yet');
+				// }
 			}
 		};
 		fetchReview();
@@ -71,8 +85,7 @@ const BookDetails = () => {
 	const handleSave = (e: FormEvent) => {
 		e.preventDefault();
 		const reviewRef = doc(db, 'books', bookId);
-		setDoc(reviewRef, { reviews: [review] }, { merge: true });
-		console.log(review);
+		setDoc(reviewRef, { reviews: [formData] }, { merge: true });
 	};
 
 	return (
@@ -121,7 +134,7 @@ const BookDetails = () => {
 							<input
 								type='text'
 								onChange={(e) =>
-									setReview({ ...review, username: e.target.value })
+									setFormData({ ...formData, username: e.target.value })
 								}
 								placeholder='Username'
 								className='border'
@@ -129,7 +142,7 @@ const BookDetails = () => {
 							<input
 								type='number'
 								onChange={(e) =>
-									setReview({ ...review, rate: Number(e.target.value) })
+									setFormData({ ...formData, rate: Number(e.target.value) })
 								}
 								min='1'
 								max='5'
@@ -139,7 +152,7 @@ const BookDetails = () => {
 							<input
 								type='text'
 								onChange={(e) =>
-									setReview({ ...review, comment: e.target.value })
+									setFormData({ ...formData, comment: e.target.value })
 								}
 								placeholder='Review'
 								className='border'
@@ -149,9 +162,13 @@ const BookDetails = () => {
 					</div>
 					{userReview && (
 						<div>
-							<p>{userReview.username}</p>
-							<p>{userReview.rate}</p>
-							<p>{userReview.comment}</p>
+							{userReview.map((review, index) => (
+								<div key={index}>
+									<p>{review.username}</p>
+									<p>{review.rate}</p>
+									<p>{review.comment}</p>
+								</div>
+							))}
 						</div>
 					)}
 				</div>

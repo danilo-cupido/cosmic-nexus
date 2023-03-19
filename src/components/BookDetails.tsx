@@ -19,19 +19,8 @@ const BookDetails = () => {
 
 	useEffect(() => {
 		const id = window.location.pathname.split('/').at(-1);
-		setBookId(id!);
-		// const fetchBook = async () => {
-		// 	const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
-		// 	try {
-		// 		const response = await axios.get<BookAPIData>(url);
-		// 		if (response.data) {
-		// 			setBook(response.data.volumeInfo);
-		// 		}
-		// 	} catch (error) {
-		// 		console.log(error);
-		// 	}
-		// };
 		if (id) {
+			setBookId(id);
 			fetchBook(id, setBook);
 			fetchReview(id, setUsersReviews);
 		}

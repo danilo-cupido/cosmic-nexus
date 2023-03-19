@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { SearchResult } from '../utils/types';
 import BookCard from '../components/BookCard';
 import SearchBar from '../components/SearchBar';
@@ -20,21 +19,25 @@ const Books = () => {
 		setLoading(true);
 		setSearchTerm(searchInput);
 
-		await fetchBooks(searchInput, setNoResult, setBooksData);
-
+		const response = await fetchBooks(searchInput);
+		if (response) {
+			if (!response.totalItems) {
+				setNoResult(true);
+				setBooksData(null);
+			} else {
+				setBooksData(response);
+			}
+		}
 		setLoading(false);
 	};
 
 	const showMore = async () => {
-		const url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}+subject:fiction&startIndex=${startIndex}&maxResults=12`;
-		try {
-			const response = await axios.get<SearchResult>(url);
-			setStartIndex(startIndex + 12);
-			const updatedBooksData = booksData!;
-			updatedBooksData.items = [...booksData!.items, ...response.data.items];
+		const response = await fetchBooks(searchTerm, `&startIndex=${startIndex}`);
+		setStartIndex(startIndex + 12);
+		const updatedBooksData = booksData!;
+		if (response) {
+			updatedBooksData.items = [...booksData!.items, ...response.items];
 			setBooksData(updatedBooksData);
-		} catch (error) {
-			console.log(error);
 		}
 	};
 

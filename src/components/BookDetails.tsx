@@ -1,10 +1,10 @@
 import { useState, useEffect, FormEvent } from 'react';
-import axios from 'axios';
 import { db } from '../connection';
-import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { BookAPIData, ReviewData } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
+import { fetchReview } from '../utils/db';
+import { fetchBook } from '../utils/fetchData';
 import StarRating from './StarRating';
 
 const BookDetails = () => {
@@ -15,77 +15,37 @@ const BookDetails = () => {
 		username: '',
 	});
 	const [bookId, setBookId] = useState('');
-	const [userReview, setUserReview] = useState<ReviewData[] | null>(null);
+	const [usersReviews, setUsersReviews] = useState<ReviewData[] | null>(null);
 
 	useEffect(() => {
 		const id = window.location.pathname.split('/').at(-1);
 		setBookId(id!);
-		const fetchBook = async () => {
-			const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
-			try {
-				const response = await axios.get<BookAPIData>(url);
-				if (response.data) {
-					setBook(response.data.volumeInfo);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchBook();
-
-		const fetchReview = async () => {
-			if (id) {
-				const reviews: ReviewData[] = [];
-				const docRef = db.collection('books').doc(id);
-				const reviewDocs = await getDocs(collection(docRef, 'reviews'));
-
-				reviewDocs.forEach((review) => {
-					console.log(review.data());
-					reviews.push(review.data() as ReviewData);
-					//console.log(review.id);
-				});
-				setUserReview(reviews);
-				// const docRef = doc(db, 'books', id);
-				// const docSnap = await getDoc(docRef);
-
-				// if (docSnap.exists()) {
-				// 	const review = docSnap.data() as ReviewData[];
-				// 	if (review) {
-				// 		// setUserReview(review);
-				// 		console.log(review);
-				// 	}
-				// } else {
-				// 	console.log('Book not reviewed yet');
-				// }
-			}
-		};
-		fetchReview();
+		// const fetchBook = async () => {
+		// 	const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
+		// 	try {
+		// 		const response = await axios.get<BookAPIData>(url);
+		// 		if (response.data) {
+		// 			setBook(response.data.volumeInfo);
+		// 		}
+		// 	} catch (error) {
+		// 		console.log(error);
+		// 	}
+		// };
+		if (id) {
+			fetchBook(id, setBook);
+			fetchReview(id, setUsersReviews);
+		}
 	}, []);
 
-	// useEffect(() => {
-	// 	const fetchReview = async () => {
-	// 		if (bookId) {
-	// 			const docRef = doc(db, 'books', bookId);
-	// 			const docSnap = await getDoc(docRef);
-
-	// 			if (docSnap.exists()) {
-	// 				const review = docSnap.data();
-	// 				if (review) {
-	// 					// setUserReview(book);
-	// 					console.log(review);
-	// 				}
-	// 			} else {
-	// 				console.log('Book not reviewed yet');
-	// 			}
-	// 		}
-	// 	};
-	// 	fetchReview();
-	// }, []);
-
-	const handleSave = (e: FormEvent) => {
+	const handleSave = async (e: FormEvent) => {
 		e.preventDefault();
-		const reviewRef = doc(db, 'books', bookId);
-		setDoc(reviewRef, { reviews: [formData] }, { merge: true });
+		await db
+			.collection('books')
+			.doc(bookId)
+			.collection('reviews')
+			.add({ ...formData, createdAt: new Date() });
+
+		fetchReview(bookId, setUsersReviews);
 	};
 
 	return (
@@ -160,13 +120,14 @@ const BookDetails = () => {
 							<button onClick={handleSave}>Save</button>
 						</form>
 					</div>
-					{userReview && (
+					{usersReviews && (
 						<div>
-							{userReview.map((review, index) => (
-								<div key={index}>
+							{usersReviews.map((review, index) => (
+								<div key={index} className='flex'>
 									<p>{review.username}</p>
 									<p>{review.rate}</p>
 									<p>{review.comment}</p>
+									<p>{review.createdAt.toString()}</p>
 								</div>
 							))}
 						</div>

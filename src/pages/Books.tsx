@@ -3,6 +3,7 @@ import axios from 'axios';
 import { SearchResult } from '../utils/types';
 import BookCard from '../components/BookCard';
 import SearchBar from '../components/SearchBar';
+import { fetchBooks } from '../utils/fetchData';
 import { Triangle } from 'react-loader-spinner';
 import robot from '../assets/robot.png';
 
@@ -18,20 +19,9 @@ const Books = () => {
 		setBooksData(null);
 		setLoading(true);
 		setSearchTerm(searchInput);
-		const url = `https://www.googleapis.com/books/v1/volumes?q=${searchInput}+subject:fiction&maxResults=12`;
-		try {
-			const response = await axios.get<SearchResult>(url);
-			if (response.data) {
-				if (!response.data.totalItems) {
-					setNoResult(true);
-					setBooksData(null);
-				} else {
-					setBooksData(response.data);
-				}
-			}
-		} catch (error) {
-			console.log(error);
-		}
+
+		await fetchBooks(searchInput, setNoResult, setBooksData);
+
 		setLoading(false);
 	};
 

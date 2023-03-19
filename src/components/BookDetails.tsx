@@ -1,37 +1,40 @@
 import { useState, useEffect, FormEvent } from 'react';
-import axios from 'axios';
 import { db } from '../connection';
-import { doc, setDoc } from 'firebase/firestore';
-import { BookAPIData } from '../utils/types';
+import { BookAPIData, ReviewData } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
+import { fetchReview } from '../utils/db';
+import { fetchBook } from '../utils/fetchData';
+import StarRating from './StarRating';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
-	const [review, setReview] = useState({ comment: '', rate: 0, username: '' });
+	const [formData, setFormData] = useState({
+		comment: '',
+		rate: 0,
+		username: '',
+	});
 	const [bookId, setBookId] = useState('');
+	const [usersReviews, setUsersReviews] = useState<ReviewData[] | null>(null);
 
 	useEffect(() => {
-		const fetchBook = async () => {
-			const id = window.location.pathname.split('/').at(-1);
-			const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
-			setBookId(id!);
-			try {
-				const response = await axios.get<BookAPIData>(url);
-				if (response.data) {
-					setBook(response.data.volumeInfo);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchBook();
+		const id = window.location.pathname.split('/').at(-1);
+		if (id) {
+			setBookId(id);
+			fetchBook(id, setBook);
+			fetchReview(id, setUsersReviews);
+		}
 	}, []);
 
-	const handleSave = (e: FormEvent) => {
+	const handleSave = async (e: FormEvent) => {
 		e.preventDefault();
-		const reviewRef = doc(db, 'books', bookId);
-		setDoc(reviewRef, review, { merge: true });
+		await db
+			.collection('books')
+			.doc(bookId)
+			.collection('reviews')
+			.add({ ...formData, createdAt: new Date() });
+
+		fetchReview(bookId, setUsersReviews);
 	};
 
 	return (
@@ -80,29 +83,47 @@ const BookDetails = () => {
 							<input
 								type='text'
 								onChange={(e) =>
-									setReview({ ...review, comment: e.target.value })
+									setFormData({ ...formData, username: e.target.value })
 								}
+								placeholder='Username'
 								className='border'
 							/>
 							<input
 								type='number'
 								onChange={(e) =>
-									setReview({ ...review, rate: Number(e.target.value) })
+									setFormData({ ...formData, rate: Number(e.target.value) })
 								}
+								min='1'
+								max='5'
+								placeholder='Score'
 								className='border'
 							/>
 							<input
 								type='text'
 								onChange={(e) =>
-									setReview({ ...review, username: e.target.value })
+									setFormData({ ...formData, comment: e.target.value })
 								}
+								placeholder='Review'
 								className='border'
 							/>
 							<button onClick={handleSave}>Save</button>
 						</form>
 					</div>
+					{usersReviews && (
+						<div>
+							{usersReviews.map((review, index) => (
+								<div key={index} className='flex'>
+									<p>{review.username}</p>
+									<p>{review.rate}</p>
+									<p>{review.comment}</p>
+									<p>{review.createdAt.toString()}</p>
+								</div>
+							))}
+						</div>
+					)}
 				</div>
 			)}
+			<StarRating />
 		</div>
 	);
 };

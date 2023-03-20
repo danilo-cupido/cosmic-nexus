@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { db } from '../connection';
 import { BookAPIData, ReviewData, ReviewInput } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
@@ -10,7 +10,7 @@ import StarRating from './StarRating';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
-	const [userInput, setUserInput] = useState<ReviewInput>();
+	// const [userInput, setUserInput] = useState<ReviewInput>();
 	const [bookId, setBookId] = useState('');
 	const [usersReviews, setUsersReviews] = useState<ReviewData[] | null>(null);
 	const [formOpened, setFormOpened] = useState(false);

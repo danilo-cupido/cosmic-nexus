@@ -1,21 +1,19 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { db } from '../connection';
-import { BookAPIData, ReviewData } from '../utils/types';
+import { BookAPIData, ReviewData, ReviewInput } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
 import { fetchReview } from '../utils/db';
 import { fetchBook } from '../utils/fetchData';
+import ReviewForm from './ReviewForm';
 import StarRating from './StarRating';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
-	const [formData, setFormData] = useState({
-		comment: '',
-		rate: 0,
-		username: '',
-	});
+	const [userInput, setUserInput] = useState<ReviewInput>();
 	const [bookId, setBookId] = useState('');
 	const [usersReviews, setUsersReviews] = useState<ReviewData[] | null>(null);
+	const [formOpened, setFormOpened] = useState(false);
 
 	useEffect(() => {
 		const id = window.location.pathname.split('/').at(-1);
@@ -26,15 +24,19 @@ const BookDetails = () => {
 		}
 	}, []);
 
-	const handleSave = async (e: FormEvent) => {
-		e.preventDefault();
+	const handleSave = async (data: ReviewInput) => {
 		await db
 			.collection('books')
 			.doc(bookId)
 			.collection('reviews')
-			.add({ ...formData, createdAt: new Date() });
+			.add({ ...data, createdAt: new Date() });
+		setFormOpened(false);
 
 		fetchReview(bookId, setUsersReviews);
+	};
+
+	const handleClick = () => {
+		setFormOpened(true);
 	};
 
 	return (
@@ -57,16 +59,17 @@ const BookDetails = () => {
 							</div>
 						)}
 						<div className='gap-4'>
-							<p className='text-xl font-bold pb-4'>{book.title}</p>
-							{book.authors ? (
-								<p>
-									{book.authors.length > 1 ? 'Authors: ' : 'Author: '}{' '}
-									{book.authors.join(', ')}
-								</p>
-							) : (
-								<p>Author: N/A</p>
-							)}
-							<div>
+							<p className='text-xl font-bold'>{book.title}</p>
+							<StarRating />
+							<div className='pt-4'>
+								{book.authors ? (
+									<p>
+										{book.authors.length > 1 ? 'Authors: ' : 'Author: '}{' '}
+										{book.authors.join(', ')}
+									</p>
+								) : (
+									<p>Author: N/A</p>
+								)}
 								<p>Publisher: {book.publisher}</p>
 								<p>Publish date: {formattedDate(book.publishedDate)}</p>
 								<p>Language: {book.language}</p>
@@ -78,42 +81,18 @@ const BookDetails = () => {
 						dangerouslySetInnerHTML={{ __html: book.description }}
 						className='mt-6'
 					></div>
-					<div className='border'>
-						<form>
-							<input
-								type='text'
-								onChange={(e) =>
-									setFormData({ ...formData, username: e.target.value })
-								}
-								placeholder='Username'
-								className='border'
-							/>
-							<input
-								type='number'
-								onChange={(e) =>
-									setFormData({ ...formData, rate: Number(e.target.value) })
-								}
-								min='1'
-								max='5'
-								placeholder='Score'
-								className='border'
-							/>
-							<input
-								type='text'
-								onChange={(e) =>
-									setFormData({ ...formData, comment: e.target.value })
-								}
-								placeholder='Review'
-								className='border'
-							/>
-							<button onClick={handleSave}>Save</button>
-						</form>
-					</div>
+					{!formOpened && (
+						<button onClick={handleClick} className='border'>
+							Write a review
+						</button>
+					)}
+					{formOpened && <ReviewForm handleSave={handleSave} />}
 					{usersReviews && (
 						<div>
 							{usersReviews.map((review, index) => (
-								<div key={index} className='flex'>
+								<div key={review.username} className='flex'>
 									<p>{review.username}</p>
+									<p>{review.title}</p>
 									<p>{review.rate}</p>
 									<p>{review.comment}</p>
 									<p>{review.createdAt.toString()}</p>
@@ -123,7 +102,6 @@ const BookDetails = () => {
 					)}
 				</div>
 			)}
-			<StarRating />
 		</div>
 	);
 };

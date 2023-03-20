@@ -4,7 +4,7 @@ export type ContentWrapper = {
 	children: ReactNode;
 };
 
-export interface BookAPIData {
+export type BookAPIData = {
 	id: string;
 	volumeInfo: {
 		authors?: string[];
@@ -16,28 +16,33 @@ export interface BookAPIData {
 		publisher: string;
 		language: string;
 	};
-}
+};
 
-export interface ReviewData {
+export type ReviewInput = {
 	username: string;
+	title: string;
 	rate: number;
 	comment: string;
+};
+
+export interface ReviewData extends ReviewInput {
 	createdAt: Date;
 }
-export interface SearchResult {
+
+export type SearchResult = {
 	items: BookAPIData[];
 	kind: string;
 	totalItems: number;
-}
+};
 
-export interface BookDBData {
+export type BookDBData = {
 	title: string;
-}
+};
 
-export interface MovieDBData {
+export type MovieDBData = {
 	title: string;
-}
+};
 
-export interface ComicDBData {
+export type ComicDBData = {
 	title: string;
-}
+};

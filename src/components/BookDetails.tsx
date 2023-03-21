@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-import { db } from '../connection';
 import { BookAPIData, ReviewData, ReviewInput } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
-import { fetchReview } from '../utils/db';
+import { fetchReview, postReview } from '../utils/db';
 import { fetchBook } from '../utils/fetchData';
 import ReviewForm from './ReviewForm';
 import StarRating from './StarRating';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
-	// const [userInput, setUserInput] = useState<ReviewInput>();
 	const [bookId, setBookId] = useState('');
 	const [usersReviews, setUsersReviews] = useState<ReviewData[] | null>(null);
 	const [formOpened, setFormOpened] = useState(false);
@@ -24,14 +22,9 @@ const BookDetails = () => {
 		}
 	}, []);
 
-	const handleSave = async (data: ReviewInput) => {
-		await db
-			.collection('books')
-			.doc(bookId)
-			.collection('reviews')
-			.add({ ...data, createdAt: new Date() });
+	const handleSave = (data: ReviewInput) => {
+		postReview(bookId, data);
 		setFormOpened(false);
-
 		fetchReview(bookId, setUsersReviews);
 	};
 
@@ -89,7 +82,7 @@ const BookDetails = () => {
 					{formOpened && <ReviewForm handleSave={handleSave} />}
 					{usersReviews && (
 						<div>
-							{usersReviews.map((review, index) => (
+							{usersReviews.map((review) => (
 								<div key={review.username} className='flex'>
 									<p>{review.username}</p>
 									<p>{review.title}</p>

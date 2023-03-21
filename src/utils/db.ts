@@ -1,4 +1,4 @@
-import { ReviewData } from './types';
+import { ReviewData, ReviewInput } from './types';
 import { db } from '../connection';
 import { getDocs, collection } from 'firebase/firestore';
 
@@ -14,4 +14,12 @@ export const fetchReview = async (
 		reviews.push(review.data() as ReviewData);
 	});
 	setUsersReviews(reviews);
+};
+
+export const postReview = async (id: string, data: ReviewInput) => {
+	await db
+		.collection('books')
+		.doc(id)
+		.collection('reviews')
+		.add({ ...data, createdAt: new Date() });
 };

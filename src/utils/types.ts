@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { ReactNode } from 'react';
 
 export type ContentWrapper = {
@@ -26,7 +27,7 @@ export type ReviewInput = {
 };
 
 export interface ReviewData extends ReviewInput {
-	createdAt: Date;
+	createdAt: Timestamp;
 }
 
 export type SearchResult = {

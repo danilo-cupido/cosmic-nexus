@@ -88,7 +88,9 @@ const BookDetails = () => {
 									<p>{review.title}</p>
 									<p>{review.rate}</p>
 									<p>{review.comment}</p>
-									<p>{review.createdAt.toDate().toDateString()}</p>
+									<p>
+										{formattedDate(review.createdAt.toDate().toDateString())}
+									</p>
 								</div>
 							))}
 						</div>

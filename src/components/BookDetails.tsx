@@ -6,6 +6,7 @@ import { fetchReview, postReview } from '../utils/db';
 import { fetchBook } from '../utils/fetchData';
 import ReviewForm from './ReviewForm';
 import StarRating from './StarRating';
+import ReviewCard from './ReviewCard';
 
 const BookDetails = () => {
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
@@ -83,15 +84,7 @@ const BookDetails = () => {
 					{usersReviews && (
 						<div>
 							{usersReviews.map((review) => (
-								<div key={review.username} className='flex'>
-									<p>{review.username}</p>
-									<p>{review.title}</p>
-									<p>{review.rate}</p>
-									<p>{review.comment}</p>
-									<p>
-										{formattedDate(review.createdAt.toDate().toDateString())}
-									</p>
-								</div>
+								<ReviewCard review={review} key={review.username} />
 							))}
 						</div>
 					)}

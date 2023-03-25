@@ -17,8 +17,7 @@ const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
 		if (!rate) {
 			setErrorMsg('Rate can not be zero');
 		}
-		console.log(rate);
-		// props.handleSave(formData);
+		props.handleSave({ ...formData, rate });
 	};
 	return (
 		<div className='border p-6 rounded shadow-sm my-4'>

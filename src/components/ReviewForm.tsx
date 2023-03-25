@@ -9,14 +9,19 @@ const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
 		title: '',
 		username: '',
 	});
+	const [rate, setRate] = useState(0);
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
-		props.handleSave(formData);
+		if (!rate) {
+			setErrorMsg('Rate can not be zero');
+		}
+		props.handleSave({ ...formData, rate });
 	};
 	return (
 		<div className='border p-6 rounded shadow-sm my-4'>
-			<form className='flex flex-col'>
+			<form onSubmit={handleSubmit} className='flex flex-col'>
 				<h1 className='text-lg font-bold mb-4'>Create Review</h1>
 				<label htmlFor='username'>Username</label>
 				<input
@@ -27,6 +32,7 @@ const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
 					}
 					placeholder='Username'
 					className='border mb-3 p-1 text-sm'
+					required
 				/>
 				<label htmlFor='title'>Title</label>
 				<input
@@ -37,18 +43,12 @@ const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
 					className='border mb-3 p-1 text-sm'
 				/>
 				<label htmlFor='rating'>Rating</label>
-				<StarRating />
-				{/* <input
-					id='rating'
-					type='number'
-					onChange={(e) =>
-						setFormData({ ...formData, rate: Number(e.target.value) })
-					}
-					min='1'
-					max='5'
-					placeholder='Score'
-					className='border'
-				/> */}
+				<div className='flex items-start'>
+					<StarRating setRate={setRate} />
+					{errorMsg && !rate && (
+						<p className='ml-2 text-sm text-red-400'>{errorMsg}</p>
+					)}
+				</div>
 				<label htmlFor='review' className='mt-3'>
 					Review
 				</label>
@@ -58,10 +58,10 @@ const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
 						setFormData({ ...formData, comment: e.target.value })
 					}
 					placeholder='Review'
-					className='border mb-3 p-1 text-sm'
+					className='border mb-3 p-1 text-sm h-96'
 				/>
 				<button
-					onClick={handleSubmit}
+					type='submit'
 					className='border w-fit py-1 px-3 rounded shadow-sm bg-gray-100'
 				>
 					Save

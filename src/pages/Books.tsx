@@ -42,7 +42,7 @@ const Books = () => {
 	};
 
 	return (
-		<div>
+		<section>
 			<SearchBar handleSearch={handleSearch} />
 			{loading && (
 				<div className='flex justify-center pt-40'>
@@ -76,7 +76,7 @@ const Books = () => {
 					</p>
 				</div>
 			)}
-		</div>
+		</section>
 	);
 };
 

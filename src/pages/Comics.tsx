@@ -1,5 +1,5 @@
 const Comics = () => {
-	return <div>Comic Books & Graphic Novels</div>;
+	return <section>Comic Books & Graphic Novels</section>;
 };
 
 export default Comics;

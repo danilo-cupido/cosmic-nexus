@@ -1,9 +1,4 @@
 import { Timestamp } from 'firebase/firestore';
-import { ReactNode } from 'react';
-
-export type ContentWrapper = {
-	children: ReactNode;
-};
 
 export type BookAPIData = {
 	id: string;

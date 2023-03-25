@@ -9,6 +9,7 @@ import Movies from './pages/Movies';
 import Comics from './pages/Comics';
 import Navbar from './components/Navbar';
 import BookDetails from './components/BookDetails';
+import Error from './pages/Error';
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 					<Route path='/movies' element={<Movies />} />
 					<Route path='/comics' element={<Comics />} />
 					<Route path='/books/:id' element={<BookDetails />} />
+					<Route path='*' element={<Error />} />
 				</Routes>
 			</Container>
 		</Router>

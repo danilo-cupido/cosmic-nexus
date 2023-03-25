@@ -13,6 +13,11 @@ export const fetchReview = async (
 	reviewDocs.forEach((review) => {
 		reviews.push(review.data() as ReviewData);
 	});
+
+	reviews.sort(
+		(a, b) => b.createdAt.toDate().getTime() - a.createdAt.toDate().getTime()
+	);
+
 	setUsersReviews(reviews);
 };
 

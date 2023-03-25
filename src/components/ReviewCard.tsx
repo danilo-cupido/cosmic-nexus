@@ -1,5 +1,6 @@
 import { formattedDate } from '../utils';
 import { ReviewData } from '../utils/types';
+import StarRating from './StarRating';
 
 const ReviewCard = (props: { review: ReviewData }) => {
 	return (
@@ -13,7 +14,7 @@ const ReviewCard = (props: { review: ReviewData }) => {
 			<p className='text-gray-900 font-bold text-md mb-1'>
 				{props.review.title}
 			</p>
-			<p>{props.review.rate}</p>
+			<StarRating rate={props.review.rate} />
 			<p>{props.review.comment}</p>
 			<p className='text-gray-700 text-sm'>
 				{formattedDate(props.review.createdAt.toDate().toDateString())}

@@ -13,20 +13,21 @@ const BookDetails = () => {
 	const [bookId, setBookId] = useState('');
 	const [usersReviews, setUsersReviews] = useState<ReviewData[] | null>(null);
 	const [formOpened, setFormOpened] = useState(false);
+	const [averageRating, setAverageRating] = useState(0);
 
 	useEffect(() => {
 		const id = window.location.pathname.split('/').at(-1);
 		if (id) {
 			setBookId(id);
 			fetchBook(id, setBook);
-			fetchReview(id, setUsersReviews);
+			fetchReview(id, setUsersReviews, setAverageRating);
 		}
 	}, []);
 
 	const handleSave = (data: ReviewInput) => {
 		postReview(bookId, data);
 		setFormOpened(false);
-		fetchReview(bookId, setUsersReviews);
+		fetchReview(bookId, setUsersReviews, setAverageRating);
 	};
 
 	const handleClick = () => {
@@ -54,20 +55,56 @@ const BookDetails = () => {
 						)}
 						<div className='gap-4'>
 							<p className='text-xl font-bold'>{book.title}</p>
-							<StarRating />
+							{usersReviews && usersReviews.length > 0 ? (
+								<div>
+									<StarRating rate={averageRating} />
+									<p>{usersReviews.length} reviews</p>
+									{!formOpened && (
+										<button
+											type='button'
+											onClick={handleClick}
+											className='border w-fit py-1 px-3 rounded shadow-sm bg-gray-100'
+										>
+											Write a review
+										</button>
+									)}
+								</div>
+							) : (
+								<a
+									href='#reviewForm'
+									type='button'
+									onClick={handleClick}
+									className='underline underline-offset-2'
+								>
+									Be the first to write a review
+								</a>
+							)}
 							<div className='pt-4'>
 								{book.authors ? (
 									<p>
-										{book.authors.length > 1 ? 'Authors: ' : 'Author: '}{' '}
+										<b className='text-gray-700'>
+											{book.authors.length > 1 ? 'Authors: ' : 'Author: '}
+										</b>{' '}
 										{book.authors.join(', ')}
 									</p>
 								) : (
-									<p>Author: N/A</p>
+									<p>
+										<b className='text-gray-700'>Author:</b> N/A
+									</p>
 								)}
-								<p>Publisher: {book.publisher}</p>
-								<p>Publish date: {formattedDate(book.publishedDate)}</p>
-								<p>Language: {book.language}</p>
-								<p>Pages: {book.pageCount}</p>
+								<p>
+									<b className='text-gray-700'>Publisher:</b> {book.publisher}
+								</p>
+								<p>
+									<b className='text-gray-700'>Publish date:</b>{' '}
+									{formattedDate(book.publishedDate)}
+								</p>
+								<p>
+									<b className='text-gray-700'>Language:</b> {book.language}
+								</p>
+								<p>
+									<b className='text-gray-700'>Pages:</b> {book.pageCount}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -75,12 +112,9 @@ const BookDetails = () => {
 						dangerouslySetInnerHTML={{ __html: book.description }}
 						className='mt-6'
 					></div>
-					{!formOpened && (
-						<button onClick={handleClick} className='border'>
-							Write a review
-						</button>
+					{formOpened && (
+						<ReviewForm handleSave={handleSave} setFormOpened={setFormOpened} />
 					)}
-					{formOpened && <ReviewForm handleSave={handleSave} />}
 					{usersReviews && (
 						<div>
 							{usersReviews.map((review) => (

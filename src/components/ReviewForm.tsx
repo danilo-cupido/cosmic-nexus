@@ -2,7 +2,10 @@ import { FormEvent, useState } from 'react';
 import { ReviewInput } from '../utils/types';
 import StarRating from './StarRating';
 
-const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
+const ReviewForm = (props: {
+	handleSave: (data: ReviewInput) => void;
+	setFormOpened: (form: boolean) => void;
+}) => {
 	const [formData, setFormData] = useState({
 		comment: '',
 		rate: 0,
@@ -20,7 +23,7 @@ const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
 		props.handleSave({ ...formData, rate });
 	};
 	return (
-		<div className='border p-6 rounded shadow-sm my-4'>
+		<div className='border p-6 rounded shadow-sm my-4' id='reviewForm'>
 			<form onSubmit={handleSubmit} className='flex flex-col'>
 				<h1 className='text-lg font-bold mb-4'>Create Review</h1>
 				<label htmlFor='username'>Username</label>
@@ -60,12 +63,21 @@ const ReviewForm = (props: { handleSave: (data: ReviewInput) => void }) => {
 					placeholder='Review'
 					className='border mb-3 p-1 text-sm h-96'
 				/>
-				<button
-					type='submit'
-					className='border w-fit py-1 px-3 rounded shadow-sm bg-gray-100'
-				>
-					Save
-				</button>
+				<div className='flex gap-2'>
+					<button
+						type='submit'
+						className='border w-fit py-1 px-3 rounded shadow-sm bg-gray-100'
+					>
+						Save
+					</button>
+					<button
+						type='button'
+						onClick={() => props.setFormOpened(false)}
+						className='border w-fit py-1 px-3 rounded shadow-sm bg-gray-100'
+					>
+						Cancel
+					</button>
+				</div>
 			</form>
 		</div>
 	);

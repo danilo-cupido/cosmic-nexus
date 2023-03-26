@@ -4,7 +4,8 @@ import { getDocs, collection } from 'firebase/firestore';
 
 export const fetchReview = async (
 	id: string,
-	setUsersReviews: (reviews: ReviewData[]) => void
+	setUsersReviews: (reviews: ReviewData[]) => void,
+	setAverageRating: (average: number) => void
 ) => {
 	const reviews: ReviewData[] = [];
 	const docRef = db.collection('books').doc(id);
@@ -17,7 +18,11 @@ export const fetchReview = async (
 	reviews.sort(
 		(a, b) => b.createdAt.toDate().getTime() - a.createdAt.toDate().getTime()
 	);
-
+	const average = Math.round(
+		reviews.map((review) => review.rate).reduce((acc, curr) => acc + curr) /
+			reviews.length
+	);
+	setAverageRating(average);
 	setUsersReviews(reviews);
 };
 

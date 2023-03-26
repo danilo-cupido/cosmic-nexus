@@ -17,9 +17,7 @@ export const fetchBook = async (
 };
 
 export const fetchBooks = async (_searchInput: string, query?: string) => {
-	console.log(_searchInput);
 	const searchInput = _searchInput.replaceAll(' ', '+');
-	console.log(searchInput);
 	const url = `https://www.googleapis.com/books/v1/volumes?q=${searchInput}+subject:fiction&maxResults=12${
 		query ?? ''
 	}`;

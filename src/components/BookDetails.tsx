@@ -36,7 +36,7 @@ const BookDetails = () => {
 	return (
 		<div className='flex justify-center'>
 			{book && (
-				<div className='border rounded-md p-10 max-w-screen-lg'>
+				<div className='border rounded-md p-10 max-w-screen-lg bg-white'>
 					<div className='flex'>
 						{book.imageLinks ? (
 							<img

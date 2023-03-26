@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 const Navbar = () => {
@@ -18,9 +18,15 @@ const Navbar = () => {
 				{categories.map((category, index) => {
 					return (
 						<li className='mr-6' key={`navItem-${index}`}>
-							<Link to={category.url} className="font-['RobotReaversItalic']">
+							<NavLink
+								to={category.url}
+								style={({ isActive }) => {
+									return { color: isActive ? 'magenta' : 'grey' };
+								}}
+								className="font-['RobotReaversItalic']"
+							>
 								{category.name}
-							</Link>
+							</NavLink>
 						</li>
 					);
 				})}

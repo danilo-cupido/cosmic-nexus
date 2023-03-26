@@ -11,18 +11,20 @@ import Error from './pages/Error';
 
 function App() {
 	return (
-		<Router>
-			<Routes>
-				<Route path='/' element={<SharedLayout />}>
-					<Route index element={<Home />} />
-					<Route path='/books' element={<Books />} />
-					<Route path='/movies' element={<Movies />} />
-					<Route path='/comics' element={<Comics />} />
-					<Route path='/books/:id' element={<BookDetails />} />
-					<Route path='*' element={<Error />} />
-				</Route>
-			</Routes>
-		</Router>
+		<div className='bg-space-background bg-cover h-screen'>
+			<Router>
+				<Routes>
+					<Route path='/' element={<SharedLayout />}>
+						<Route index element={<Home />} />
+						<Route path='/books' element={<Books />} />
+						<Route path='/movies' element={<Movies />} />
+						<Route path='/comics' element={<Comics />} />
+						<Route path='/books/:id' element={<BookDetails />} />
+						<Route path='*' element={<Error />} />
+					</Route>
+				</Routes>
+			</Router>
+		</div>
 	);
 }
 

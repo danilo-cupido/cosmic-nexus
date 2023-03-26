@@ -18,7 +18,7 @@ const SearchBar = (props: { handleSearch: (searchTerm: string) => void }) => {
 
 	return (
 		<div className='flex justify-center'>
-			<div className='flex items-center border rounded-lg w-80 p-2'>
+			<div className='flex items-center border rounded-lg w-80 p-2 bg-white shadow-inner'>
 				<FaSearch />
 				<input
 					id='search'

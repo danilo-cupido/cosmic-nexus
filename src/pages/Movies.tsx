@@ -1,5 +1,12 @@
+import SearchBar from '../components/SearchBar';
+
 const Movies = () => {
-	return <section>Movies</section>;
+	const handleSearch = () => {};
+	return (
+		<section>
+			<SearchBar handleSearch={handleSearch} />
+		</section>
+	);
 };
 
 export default Movies;

@@ -1,5 +1,12 @@
+import SearchBar from '../components/SearchBar';
+
 const Comics = () => {
-	return <section>Comic Books & Graphic Novels</section>;
+	const handleSearch = () => {};
+	return (
+		<section>
+			<SearchBar handleSearch={handleSearch} />
+		</section>
+	);
 };
 
 export default Comics;

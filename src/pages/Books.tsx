@@ -71,7 +71,7 @@ const Books = () => {
 			{noResult && (
 				<div className='flex justify-center items-center mt-20'>
 					<img src={robot} alt='A disappointed robot' className='w-auto h-16' />
-					<p className="text-2xl font-['RobotReaversItalic'] pl-6">
+					<p className='text-2xl font-["RobotReaversItalic"] pl-6'>
 						No Books found
 					</p>
 				</div>

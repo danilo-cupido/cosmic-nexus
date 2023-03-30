@@ -12,7 +12,7 @@ const Navbar = () => {
 		<div className='flex bg-transparent items-center justify-between'>
 			<div className='flex items-center'>
 				<img src={logo} alt='Cosmic Nexus logo' className='w-20' />
-				<p className="font-['RobotReavers'] font-semibold">COSMIC NEXUS</p>
+				<p className='font-["RobotReavers"] font-semibold'>COSMIC NEXUS</p>
 			</div>
 			<ul className='flex'>
 				{categories.map((category, index) => {
@@ -20,10 +20,11 @@ const Navbar = () => {
 						<li className='mr-6' key={`navItem-${index}`}>
 							<NavLink
 								to={category.url}
-								style={({ isActive }) => {
-									return { color: isActive ? 'magenta' : 'grey' };
+								className={({ isActive }) => {
+									return `${
+										isActive ? 'text-pink-400' : 'text-gray-700'
+									} font-["RobotReaversItalic"]`;
 								}}
-								className="font-['RobotReaversItalic']"
 							>
 								{category.name}
 							</NavLink>

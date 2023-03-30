@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { BookAPIData, ReviewData, ReviewInput } from '../utils/types';
 import { BsImages } from 'react-icons/bs';
 import { formattedDate } from '../utils';
@@ -9,25 +10,23 @@ import StarRating from './StarRating';
 import ReviewCard from './ReviewCard';
 
 const BookDetails = () => {
+	const { bookId } = useParams();
 	const [book, setBook] = useState<BookAPIData['volumeInfo'] | null>(null);
-	const [bookId, setBookId] = useState('');
 	const [usersReviews, setUsersReviews] = useState<ReviewData[] | null>(null);
 	const [formOpened, setFormOpened] = useState(false);
 	const [averageRating, setAverageRating] = useState(0);
 
 	useEffect(() => {
-		const id = window.location.pathname.split('/').at(-1);
-		if (id) {
-			setBookId(id);
-			fetchBook(id, setBook);
-			fetchReview(id, setUsersReviews, setAverageRating);
+		if (bookId) {
+			fetchBook(bookId, setBook);
+			fetchReview(bookId, setUsersReviews, setAverageRating);
 		}
-	}, []);
+	}, [bookId]);
 
 	const handleSave = (data: ReviewInput) => {
-		postReview(bookId, data);
+		postReview(bookId!, data);
 		setFormOpened(false);
-		fetchReview(bookId, setUsersReviews, setAverageRating);
+		fetchReview(bookId!, setUsersReviews, setAverageRating);
 	};
 
 	const handleClick = () => {

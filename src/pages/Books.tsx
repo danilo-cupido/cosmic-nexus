@@ -63,7 +63,7 @@ const Books = () => {
 							return <BookCard bookData={bookData} key={`book-${index}`} />;
 						})}
 					</div>
-					<button type='button' onClick={showMore}>
+					<button type='button' className='text-zinc-400' onClick={showMore}>
 						Show more
 					</button>
 				</>
